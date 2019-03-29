@@ -6,6 +6,8 @@ import skimage.measure
 import os
 from keras_contrib.losses import DSSIMObjective
 keras.losses.dssim = DSSIMObjective()
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 import matplotlib
 matplotlib.use('Agg')
@@ -44,9 +46,6 @@ def prediction(model_name, data, labels, save_err_img = False,
                transpose=True):
     from src.processing.train import get_unet
     from keras.optimizers import Adam
-    #model = get_unet(192, 192, num_layers=6, filter_size=3,
-    #                            conv_depth=32, optimizer=Adam(lr=1e-3), loss='mse')
-    #model.load_weights(Folders.models_folder() + model_name + '/' + weights_file)
     model = keras.models.load_model(Folders.models_folder() + model_name + '/' + weights_file)
     mp_folder = Folders.predictions_folder() + model_name + '-n{0}/'.format(data.shape[0])
     os.makedirs(mp_folder, exist_ok=True)
@@ -110,35 +109,6 @@ def prediction(model_name, data, labels, save_err_img = False,
     SSIMPlotter.save_plot(model_name, ssim)
     return ssim
 
-#data, label_r, label_i = DataLoader.load_testing(records=-1)
-#prediction('unet_6_layers_1e-05_lr_3px_filter_32_convd_i_retrain_50_epoch_mse', data, label_i)
-#ssim_r = prediction('dcgan_6_layers_0.001_lr_3px_filter_32_convd_r', data, label_r, weights_file='gen_4_epochs.h5')
-#print(np.mean(ssim_r))
-#ssim_r=prediction('unet_5_layers_0.0001_lr_4px_filter_32_convd_loss_msq_r', data, label_r)
 
-# data, label = DataLoader.load_testing(records=64, separate=False)
-# ssim = prediction('unet_6-3_mse_prelu-dual-test', data, label)
-
-# data, label_r, label_i = DataLoader.load_testing(records=64)
-# ssim = prediction('unet_6-3_mse_prelu-test_real', data, label_r)
-# ssim = prediction('unet_6-3_mse_prelu-test_imag', data, label_i)
-#
-# data, label_mag, label_ph = DataLoader.load_testing(records=64, dataset='ds-lymphoma-magphase')
-# for i in range(label_ph.shape[0]):
-#     print("{2} Max: {0}, Min: {1}, Err:[3}".format(
-#         np.max(label_ph[i]), np.min(label_ph[i]), i))
-
-# ssim = prediction('unet_6-3_mse_prelu-test-magphase_magnitude', data, label_mag)
-# ssim = prediction('unet_6-3_mse_prelu-test-magphase_phase', data, label_ph, save_err_img=True)
-
-
-# data, label_mag, label_ph = DataLoader.load_testing(records=-1, dataset='ds-lymphoma-magphase')
-# ssim = prediction('unet_6-3_mse_prelu-test-magphase_magnitude', data, label_mag)
-
-# data, label_splitphase = DataLoader.load_testing(records=-1, separate = False,
-#         dataset='ds-lymphoma-magphase-splitphase')
-# ssim = prediction('unet_6-3_mse_prelu-split-phase-only', data, label_splitphase, phase_mapping=True)
-
-# data, label_text = DataLoader.load_testing(records=-1, separate = False,
-#             dataset='ds-text')
-# ssim = prediction('unet_6-3_mse_text', data, label_text, transpose=False)
+data, label = DataLoader.load_testing(records=-1, dataset='nucleus')
+ssim = prediction('nucleus-initial', data, label)

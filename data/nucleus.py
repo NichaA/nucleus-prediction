@@ -92,15 +92,15 @@ class NucleusDataGenerator(object):
 
                         transformation = "tm_{0}_tn_{1}_rot_{2}".format(st_m, st_n, rot)
 
-                        transDestFilename = '{0:05}-trans-{1}-{2}.png'.format(seq,transformation,input_title)
-                        dapiDestFilename = '{0:05}-dapi-{1}-{2}.png'.format(seq,transformation,input_title)
+                        transDestFilename = '{0:05}-trans-{1}-{2}.png'.format(seq,transformation,input_title.replace('trans', ''))
+                        dapiDestFilename = '{0:05}-dapi-{1}-{2}.png'.format(seq,transformation,input_title.replace('trans', ''))
 
                         scipy.misc.imsave(os.path.join(image_folder, transDestFilename), transTile)
                         scipy.misc.imsave(os.path.join(image_folder, dapiDestFilename), dapiTile)
 
                         # append the raw data to the np tensor
-                        data[seq, :] = np.rot90(dapi[st_m:end_m, st_n:end_n], int(rot / 90))
-                        labels[seq, :] = np.rot90(trans[st_m:end_m, st_n:end_n], int(rot / 90))
+                        data[seq, :] = np.rot90(trans[st_m:end_m, st_n:end_n], int(rot / 90))
+                        labels[seq, :] = np.rot90(dapi[st_m:end_m, st_n:end_n], int(rot / 90))
                         seq = seq + 1
         data = data[..., np.newaxis]
         labels = labels[..., np.newaxis]
