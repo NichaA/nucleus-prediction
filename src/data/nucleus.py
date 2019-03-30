@@ -31,7 +31,7 @@ class NucleusDataGenerator(object):
         # returns a list of dapi/trans tuples for a given folder
         input_files = glob.glob(folder_name + '*.trans.tif')
         num_input_files = len(input_files)
-        print("Num input files: {0}".format(num_input_files))
+        # print("Num input files: {0}".format(num_input_files))
         pruned_input_files = []
         trans_pattern = re.compile(r"_[A-Za-z0-9]*_\d+ms\.trans.tif")
         for trans_file in input_files:
@@ -45,7 +45,7 @@ class NucleusDataGenerator(object):
                 matching_dapis = glob.glob(subbed)
                 if len(matching_dapis) > 0:
                     pruned_input_files.append((trans_file, matching_dapis[0]))
-        print("Num input pairs: {0}".format(len(pruned_input_files)))
+        print("Num input pairs in {0}: {1}\n\n".format(folder_name, len(pruned_input_files)))
         print("First 2 input file pairs: \n\n{0}\n\n{1}".format(pruned_input_files[0], pruned_input_files[1]))
         return pruned_input_files
 

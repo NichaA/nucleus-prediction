@@ -34,3 +34,7 @@ folders = [
 # NucleusDataGenerator.partitionTrainingAndTestSet()
 
 NucleusDataGenerator.generateTransDapiPairs(folders[0])
+NucleusDataGenerator.generateTransDapiPairs(folders[1])
+NucleusDataGenerator.generateTransDapiPairs(folders[2])
+NucleusDataGenerator.generateTransDapiPairs(folders[3])
+
