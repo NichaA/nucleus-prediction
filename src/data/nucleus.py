@@ -9,11 +9,12 @@ import re
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
+from src.processing.folders import Folders
 
 class NucleusDataGenerator(object):
     @classmethod
     def partitionTrainingAndTestSet(cls, set_name='nucleus'):
-        data_folder = '../../data/'
+        data_folder = Folders.data_folder()
         data_npz = np.load(data_folder + set_name + '-all.npz')
         all_data, all_labels = data_npz['data'], data_npz['labels']
         np.random.seed(0)
