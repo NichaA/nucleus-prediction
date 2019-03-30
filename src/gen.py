@@ -18,10 +18,10 @@ folders = [
     # base_folder + "",
 ]
 
-# NucleusDataGenerator.generateImages(
-#     set_name='0129-2dirs',
-#     input_folder=folders,
-#     output_folder='../data/')
-NucleusDataGenerator.partitionTrainingAndTestSet(set_name='0129-2dirs')
+NucleusDataGenerator.generateImages(
+    set_name='nucleus-4dirs',
+    input_folder=folders,
+    output_folder='../data/')
+NucleusDataGenerator.partitionTrainingAndTestSet(set_name='nucleus-4dirs')
 
 
