@@ -1,4 +1,5 @@
 from src.processing.folders import Folders
+from src.processing.train import train_unet
 
 # train_unet('nucleus-initial', dataset='nucleus',
 #            num_layers=6, filter_size=3,

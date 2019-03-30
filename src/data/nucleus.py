@@ -39,16 +39,29 @@ class NucleusDataGenerator(object):
         if not os.path.exists(image_folder):
             os.makedirs(image_folder)
 
-        input_files = glob.glob(input_folder + '*.trans.tif')
+        folder_to_id = {}
+        input_folder_list = isinstance(input_folder, list)
+        if input_folder_list:
+            input_files = []
+            for idx, f in enumerate(input_folder):
+                input_files.append(glob.glob(f + '*.trans.tif'))
+                folder_to_id[f] = idx
+        else:
+            input_files = glob.glob(input_folder + '*.trans.tif')
+
+        print("Folder ids:")
+        print(folder_to_id)
+
         num_input_files = len(input_files)
         for input_file in input_files:
-            # open a phase image
-
+            # open phase image and its dapi counterpart
             trans = TIFF.open(input_file).read_image() / 4095.
             dapi = TIFF.open(input_file.replace('trans', 'dapi')).read_image() / 4095.
-            # trans = tiff.imread(input_file)
-            # dapi = tiff.imread(input_file.replace('trans', 'dapi'))
+
             input_title = os.path.splitext(os.path.basename(input_file))[0]
+            if input_folder_list:
+                dir_id = folder_to_id[os.path.dirname(input_file)]
+                input_title = 'dir{0}_{1}'.format(dir_id, input_title)
 
             viewDapi = Image.fromarray(np.transpose(np.uint8(255.0 * dapi / np.max(dapi))))
             viewTrans = Image.fromarray(np.transpose(np.uint8(255.0 * trans / np.max(trans))))
@@ -109,5 +122,5 @@ class NucleusDataGenerator(object):
 
 
 
-NucleusDataGenerator.generateImages()
-NucleusDataGenerator.partitionTrainingAndTestSet()
+# NucleusDataGenerator.generateImages()
+# NucleusDataGenerator.partitionTrainingAndTestSet()
