@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BASE=/home/ubuntu/nucleus_prediction
+BASE=/home/ubuntu/nucleus-prediction
 MODEL_NAME=$1
 PROC_DIR=$BASE/src
 LOG_DIR=$BASE/logs/$MODEL_NAME
