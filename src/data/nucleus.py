@@ -34,7 +34,7 @@ class NucleusDataGenerator(object):
         num_input_files = len(input_files)
         # print("Num input files: {0}".format(num_input_files))
         pruned_input_files = []
-        trans_pattern = re.compile(r"_[A-Za-z0-9]*_\d+ms\.trans.tif")
+        trans_pattern = re.compile(r"_[A-Za-z0-9]+_\d+ms\.trans\.tif")
         for trans_file in input_files:
             dapi_file = trans_file.replace('trans.tif', 'dapi.tif')
             if os.path.isfile(dapi_file):
