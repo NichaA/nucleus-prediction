@@ -1,4 +1,8 @@
-from src.processing.folders import Folders
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+
 from src.processing.train import train_unet
 
 # train_unet('nucleus-initial', dataset='nucleus',
