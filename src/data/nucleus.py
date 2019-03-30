@@ -40,7 +40,7 @@ class NucleusDataGenerator(object):
                 pruned_input_files.append((trans_file,dapi_file))
             # next try to remove the exposure time from trans...
             else:
-                subbed = trans_pattern.sub('*.dapi.tif', input_files)
+                subbed = trans_pattern.sub('*.dapi.tif', trans_file)
                 print(subbed)
                 matching_dapis = glob.glob(subbed)
                 if len(matching_dapis) > 0:
