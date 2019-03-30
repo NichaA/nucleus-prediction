@@ -59,11 +59,16 @@ class NucleusDataGenerator(object):
         print("Num input files: {0}".format(num_input_files))
         print("First 2 input files: \n{0}\n{1}".format(input_files[0], input_files[1]))
 
+        pruned_input_files = []
         for trans_file in input_files:
             dapi_file = trans_file.replace('trans', 'dapi')
-            if(not os.path.isfile(dapi_file)):
+            if (os.path.isfile(dapi_file)):
                 # some trans do not have corresponding dapis...
-                continue
+                pruned_input_files.append(trans_file)
+
+
+        for trans_file in pruned_input_files:
+            dapi_file = trans_file.replace('trans', 'dapi')
             # open phase image and its dapi counterpart
             trans = TIFF.open(trans_file).read_image() / 4095.
             dapi = TIFF.open(dapi_file).read_image() / 4095.
