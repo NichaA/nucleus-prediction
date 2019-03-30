@@ -70,8 +70,8 @@ class NucleusDataGenerator(object):
             for idx, f in enumerate(input_folder):
                 input_files.extend(NucleusDataGenerator.generateTransDapiPairs(f, debug=debug))
                 folder_to_id[f] = idx
-            print("\n\n---------\nTotal of {0} Trans/Dapi Pairs Detected Across {1} Folders\n---------\n\n",
-                  len(input_files), len(input_folder))
+            print("\n\n---------\nTotal of {0} Trans/Dapi Pairs Detected Across {1} Folders\n---------\n\n".format(
+                  len(input_files), len(input_folder)))
         else:
             input_files = NucleusDataGenerator.generateTransDapiPairs(input_folder, debug=debug)
         num_input_files = len(input_files)
