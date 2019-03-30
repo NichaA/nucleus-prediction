@@ -83,7 +83,7 @@ class NucleusDataGenerator(object):
 
             input_title = os.path.splitext(os.path.basename(trans_file))[0]
             if input_folder_list:
-                dir_id = folder_to_id[os.path.dirname(trans_file)]
+                dir_id = folder_to_id[os.path.dirname(trans_file) + '/']
                 input_title = 'dir{0}_{1}'.format(dir_id, input_title)
 
             viewDapi = Image.fromarray(np.transpose(np.uint8(255.0 * dapi / np.max(dapi))))
@@ -102,6 +102,7 @@ class NucleusDataGenerator(object):
             if data is None:
                 data = np.zeros((num_input_files * 4 * M_count * N_count, tile[0] , tile[1]))
                 labels = np.zeros((num_input_files * 4 * M_count * N_count, tile[0] , tile[1]))
+                print("Creating a dataset of shape: {0}".format(data.shape))
                 # print("data shape: ")
                 # print(data.shape)
                 # print('\n')
