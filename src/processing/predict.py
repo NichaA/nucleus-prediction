@@ -110,5 +110,5 @@ def prediction(model_name, data, labels, save_err_img = False,
     return ssim
 
 
-data, label = DataLoader.load_testing(records=-1, dataset='nucleus')
-ssim = prediction('nucleus-initial', data, label)
+# data, label = DataLoader.load_testing(records=-1, dataset='nucleus')
+# ssim = prediction('nucleus-initial', data, label)

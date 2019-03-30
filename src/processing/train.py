@@ -120,9 +120,9 @@ def train_unet(descriptive_name, dataset='ds-lymphoma',
 # train a toy unet for the image evolution plot test
 #train_unet('evplot', num_layers=3, filter_size=3, learn_rate=1e-4, conv_depth=1, epochs=2, records=64)
 
-
-train_unet('nucleus-initial', dataset='nucleus',
-           num_layers=6, filter_size=3,
-           learn_rate=1e-4, conv_depth=32, epochs=25,
-           records=-1, batch_size=16, activation=A.PReLU,
-           advanced_activations=True, last_activation=A.PReLU)
+#
+# train_unet('nucleus-initial', dataset='nucleus',
+#            num_layers=6, filter_size=3,
+#            learn_rate=1e-4, conv_depth=32, epochs=25,
+#            records=-1, batch_size=16, activation=A.PReLU,
+#            advanced_activations=True, last_activation=A.PReLU)
