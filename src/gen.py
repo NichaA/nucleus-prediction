@@ -7,16 +7,30 @@ from src.data.nucleus import NucleusDataGenerator
 # folders for this training session
 base_folder = "/home/ubuntu/Dropbox/Voldman_Group/ML with Cell Images/Images/"
 
+# for each trans
+
 folders = [
+    # these don't work!!
     base_folder + "01292018_HUVEC(5x_10x)_edgeAndFlat/HUVECs10x_01292018_flat/",
     base_folder + "01292018_HUVEC(5x_10x)_edgeAndFlat/HUVECs10x_01292018_edge/",
+    base_folder + "012318_HUVEC(5x_10x_phaseNnucleus_phase)/HUVEC(10x)_01232018/10x_01232018_2/",
+    base_folder + "012318_HUVEC(5x_10x_phaseNnucleus_phase)/HUVEC(10x)_01232018/10x_01232018_1/",
+    # base_folder + "",
+    # base_folder + "",
+    # base_folder + "",
+    # base_folder + "",
+
 ]
+
+
 #path_to_dir = path_to_dir.replace(" ", "\\ ")
 
 
-NucleusDataGenerator.generateImages(
-    set_name='0129-2dirs',
-    input_folder=folders,
-    output_folder='../data/')
+# NucleusDataGenerator.generateImages(
+#     set_name='0129-2dirs',
+#     input_folder=folders,
+#     output_folder='../data/')
+#
+# NucleusDataGenerator.partitionTrainingAndTestSet()
 
-NucleusDataGenerator.partitionTrainingAndTestSet()
+NucleusDataGenerator.generateTransDapiPairs(folders[0])

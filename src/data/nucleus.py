@@ -5,7 +5,7 @@ import scipy
 import scipy.misc
 from PIL import Image
 from libtiff import TIFF
-
+import re
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
@@ -27,6 +27,23 @@ class NucleusDataGenerator(object):
 
 
     @classmethod
+    def generateTransDapiPairs(cls, folder_name):
+        # returns a list of dapi/trans tuples for a given folder
+        input_files = glob.glob(folder_name + '*.trans.tif')
+        pruned_input_files = []
+        trans_pattern = re.compile(r"_[A-Za-z0-9]*_\d+ms\.trans.tif")
+        for trans_file in input_files:
+            dapi_file = trans_file.replace('trans.tif', 'dapi.tif')
+            if (os.path.isfile(dapi_file)):
+                pruned_input_files.append((trans_file,dapi_file))
+            # next try to remove the exposure time from trans...
+            matching_dapis = glob.glob(trans_pattern.sub('*.dapi.tif', input_files))
+            if(len(matching_dapis) > 0):
+                pruned_input_files.append((trans_file, matching_dapis[0]))
+        return pruned_input_files
+
+
+    @classmethod
     def generateImages(cls, set_name='nucleus', stride=100, tile=(192,192),
                       input_folder='../../data/nucleus-raw/',
                       output_folder='../../data/',
@@ -41,35 +58,21 @@ class NucleusDataGenerator(object):
 
         folder_to_id = {}
         input_folder_list = isinstance(input_folder, list)
+        input_files = []
+
         if input_folder_list:
-            input_files = []
             for idx, f in enumerate(input_folder):
-                ifiles = glob.glob(f + '*.trans.tif')
-                print("Found {0} files in {1}", len(ifiles), f + '*.trans.tif')
-                input_files.extend(glob.glob(f + '*.trans.tif'))
+                input_files.extend(NucleusDataGenerator.generateTransDapiPairs(f))
                 folder_to_id[f] = idx
         else:
             input_files = glob.glob(input_folder + '*.trans.tif')
 
-        print("Folder ids:")
-        print(folder_to_id)
-
         num_input_files = len(input_files)
 
         print("Num input files: {0}".format(num_input_files))
-        print("First 2 input files: \n{0}\n{1}".format(input_files[0], input_files[1]))
+        print("First 2 input file pairs: \n\n{0}\n\n{1}".format(input_files[0], input_files[1]))
 
-        pruned_input_files = []
-        for trans_file in input_files:
-            dapi_file = trans_file.replace('trans', 'dapi')
-            if (os.path.isfile(dapi_file)):
-                # some trans do not have corresponding dapis...
-                pruned_input_files.append(trans_file)
-
-        num_input_files = len(pruned_input_files)
-        print("Num input files after pruning: {0}".format(num_input_files))
-        for trans_file in pruned_input_files:
-            dapi_file = trans_file.replace('trans', 'dapi')
+        for trans_file, dapi_file in input_files:
             # open phase image and its dapi counterpart
             trans = TIFF.open(trans_file).read_image() / 4095.
             dapi = TIFF.open(dapi_file).read_image() / 4095.
