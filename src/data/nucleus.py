@@ -30,16 +30,23 @@ class NucleusDataGenerator(object):
     def generateTransDapiPairs(cls, folder_name):
         # returns a list of dapi/trans tuples for a given folder
         input_files = glob.glob(folder_name + '*.trans.tif')
+        num_input_files = len(input_files)
+        print("Num input files: {0}".format(num_input_files))
         pruned_input_files = []
         trans_pattern = re.compile(r"_[A-Za-z0-9]*_\d+ms\.trans.tif")
         for trans_file in input_files:
             dapi_file = trans_file.replace('trans.tif', 'dapi.tif')
-            if (os.path.isfile(dapi_file)):
+            if os.path.isfile(dapi_file):
                 pruned_input_files.append((trans_file,dapi_file))
             # next try to remove the exposure time from trans...
-            matching_dapis = glob.glob(trans_pattern.sub('*.dapi.tif', input_files))
-            if(len(matching_dapis) > 0):
-                pruned_input_files.append((trans_file, matching_dapis[0]))
+            else:
+                subbed = trans_pattern.sub('*.dapi.tif', input_files)
+                print(subbed)
+                matching_dapis = glob.glob(subbed)
+                if len(matching_dapis) > 0:
+                    pruned_input_files.append((trans_file, matching_dapis[0]))
+        print("Num input pairs: {0}".format(len(pruned_input_files)))
+        print("First 2 input file pairs: \n\n{0}\n\n{1}".format(pruned_input_files[0], pruned_input_files[1]))
         return pruned_input_files
 
 
@@ -69,8 +76,6 @@ class NucleusDataGenerator(object):
 
         num_input_files = len(input_files)
 
-        print("Num input files: {0}".format(num_input_files))
-        print("First 2 input file pairs: \n\n{0}\n\n{1}".format(input_files[0], input_files[1]))
 
         for trans_file, dapi_file in input_files:
             # open phase image and its dapi counterpart
