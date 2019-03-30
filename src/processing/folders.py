@@ -6,7 +6,7 @@ class Folders(object):
 
     @classmethod
     def get_folder(cls, name):
-        relative_path = '../../{0}/'.format(name)
+        relative_path = '../{0}/'.format(name)
         if not os.path.exists(relative_path):
             os.makedirs(relative_path)
         return relative_path
