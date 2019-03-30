@@ -66,7 +66,8 @@ class NucleusDataGenerator(object):
                 # some trans do not have corresponding dapis...
                 pruned_input_files.append(trans_file)
 
-
+        num_input_files = len(pruned_input_files)
+        print("Num input files after pruning: {0}".format(num_input_files))
         for trans_file in pruned_input_files:
             dapi_file = trans_file.replace('trans', 'dapi')
             # open phase image and its dapi counterpart
