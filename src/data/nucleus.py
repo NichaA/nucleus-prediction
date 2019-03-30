@@ -53,6 +53,10 @@ class NucleusDataGenerator(object):
         print(folder_to_id)
 
         num_input_files = len(input_files)
+
+        print("Num input files: {0}".format(num_input_files))
+        print("First 2 input files: \n{0}\n{1}".format(input_files[0], input_files[1]))
+
         for input_file in input_files:
             # open phase image and its dapi counterpart
             trans = TIFF.open(input_file).read_image() / 4095.
