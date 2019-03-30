@@ -5,7 +5,7 @@ from keras.layers import Input, concatenate, Conv2D, MaxPooling2D, Conv2DTranspo
 from keras.optimizers import Adam
 from keras import backend as K
 import keras.layers.advanced_activations as A
-from src.metrics.entropy import ImageComparator
+# from src.metrics.entropy import ImageComparator
 
 K.set_image_data_format('channels_last')
 
