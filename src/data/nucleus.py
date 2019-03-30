@@ -46,7 +46,7 @@ class NucleusDataGenerator(object):
             for idx, f in enumerate(input_folder):
                 ifiles = glob.glob(f + '*.trans.tif')
                 print("Found {0} files in {1}", len(ifiles), f + '*.trans.tif')
-                input_files.append(glob.glob(f + '*.trans.tif'))
+                input_files.extend(glob.glob(f + '*.trans.tif'))
                 folder_to_id[f] = idx
         else:
             input_files = glob.glob(input_folder + '*.trans.tif')
