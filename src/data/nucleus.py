@@ -59,14 +59,18 @@ class NucleusDataGenerator(object):
         print("Num input files: {0}".format(num_input_files))
         print("First 2 input files: \n{0}\n{1}".format(input_files[0], input_files[1]))
 
-        for input_file in input_files:
+        for trans_file in input_files:
+            dapi_file = trans_file.replace('trans', 'dapi')
+            if(not os.path.isfile(dapi_file)):
+                # some trans do not have corresponding dapis...
+                continue
             # open phase image and its dapi counterpart
-            trans = TIFF.open(input_file).read_image() / 4095.
-            dapi = TIFF.open(input_file.replace('trans', 'dapi')).read_image() / 4095.
+            trans = TIFF.open(trans_file).read_image() / 4095.
+            dapi = TIFF.open(dapi_file).read_image() / 4095.
 
-            input_title = os.path.splitext(os.path.basename(input_file))[0]
+            input_title = os.path.splitext(os.path.basename(trans_file))[0]
             if input_folder_list:
-                dir_id = folder_to_id[os.path.dirname(input_file)]
+                dir_id = folder_to_id[os.path.dirname(trans_file)]
                 input_title = 'dir{0}_{1}'.format(dir_id, input_title)
 
             viewDapi = Image.fromarray(np.transpose(np.uint8(255.0 * dapi / np.max(dapi))))
