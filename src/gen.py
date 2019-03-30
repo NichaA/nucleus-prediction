@@ -26,15 +26,11 @@ folders = [
 #path_to_dir = path_to_dir.replace(" ", "\\ ")
 
 
-# NucleusDataGenerator.generateImages(
-#     set_name='0129-2dirs',
-#     input_folder=folders,
-#     output_folder='../data/')
-#
-# NucleusDataGenerator.partitionTrainingAndTestSet()
+NucleusDataGenerator.generateImages(
+    set_name='0129-2dirs',
+    input_folder=folders,
+    output_folder='../data/')
 
-NucleusDataGenerator.generateTransDapiPairs(folders[0])
-NucleusDataGenerator.generateTransDapiPairs(folders[1])
-NucleusDataGenerator.generateTransDapiPairs(folders[2])
-NucleusDataGenerator.generateTransDapiPairs(folders[3])
+# NucleusDataGenerator.partitionTrainingAndTestSet(set_name='0129-2dirs')
+
 
