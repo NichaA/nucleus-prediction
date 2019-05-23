@@ -27,6 +27,9 @@ class NucleusDataGenerator(object):
         np.savez(os.path.join(data_folder, set_name + '-test.npz'), data=test_data, labels=test_labels)
 
 
+# sort by last-changed date
+#
+
     @classmethod
     def generateTransDapiPairs(cls, folder_name, debug=False):
         # returns a list of dapi/trans tuples for a given folder
