@@ -17,21 +17,19 @@ import scipy.misc
 class ImageEvolution(object):
 
     @classmethod
-    def format_and_return(cls, img_array, normalize=None, transpose=True):
+    def format_and_return(cls, img_array, normalize=None):
         img_array = img_array.reshape([192, 192])
         if normalize is not None:
             # img_array = img_array + normalize
             img_array = img_array + np.min(img_array)
-        if transpose:
-            img = Image.fromarray(np.transpose(np.uint8(255.0 * img_array / np.max(img_array))))
-        else:
-            img = Image.fromarray(np.uint8(255.0 * img_array / np.max(img_array)))
+
+        img = Image.fromarray(np.uint8(255.0 * img_array / np.max(img_array)))
         return img
 
     @classmethod
     def save_epoch_evolution(cls, model_name, data, labels,
-                             epochs = 18, n_columns = 6, transpose=True):
-        #epoch_ev = []
+                             epochs = 18, n_columns = 6):
+        print("data.shape: {0}".format(data.shape))
         epoch_ev = np.zeros((epochs, data.shape[0], data.shape[1], data.shape[2]))
         for i in range(epochs):
             # load model
@@ -42,22 +40,22 @@ class ImageEvolution(object):
             del model
             predictions=predictions.astype(np.float64)
             predictions=predictions.reshape([data.shape[0],data.shape[1], data.shape[2]])
-            #pred = ImageEvolution.format_and_return(predictions[idx], transpose=transpose)
+            #pred = ImageEvolution.format_and_return(predictions[idx])
             #epoch_ev.append(predictions)
             epoch_ev[i] = predictions
 
         data = data.reshape([data.shape[0], data.shape[1], data.shape[2]])
         labels = labels.reshape([labels.shape[0], labels.shape[1], labels.shape[2]])
         for idx in range(data.shape[0]):
-            img = ImageEvolution.format_and_return(data[idx], transpose=transpose)
-            label = ImageEvolution.format_and_return(labels[idx], transpose=transpose)
+            img = ImageEvolution.format_and_return(data[idx])
+            label = ImageEvolution.format_and_return(labels[idx])
 
-            ImageEvolution.saveTiledImages(epoch_ev[:, idx, ...], model_name + '_{0:05}'.format(idx), n_columns=n_columns)
-            scipy.misc.imsave(Folders.figures_folder() + model_name + '_evolution_data_{0:05}.png'.format(idx), img)
-            scipy.misc.imsave(Folders.figures_folder() + model_name + '_evolution_label_{0:05}.png'.format(idx), label)
+            ImageEvolution.saveTiledImages(epoch_ev[:, idx, ...], '{0:05}_'.format(idx) + model_name, n_columns=n_columns)
+            scipy.misc.imsave(Folders.figures_folder() + '{0:05}_'.format(idx) + model_name + '_evolution_data.png', img)
+            scipy.misc.imsave(Folders.figures_folder() + '{0:05}_'.format(idx) + model_name + '_evolution_label.png', label)
 
     @classmethod
-    def save_plot(cls, model_name, title='', transpose=True):
+    def save_plot(cls, model_name, title=''):
         # load model
         model = keras.models.load_model(Folders.models_folder() + model_name + '/weights.h5')
 
@@ -77,10 +75,10 @@ class ImageEvolution(object):
                 img_min = np.min(img_array)
                 if img_min < 0:
                     img_array = img_array + img_min
-                if transpose:
-                    img = Image.fromarray(np.transpose(np.uint8(255.0 * img_array / np.max(img_array))))
-                else:
-                    img = Image.fromarray(np.uint8(255.0 * img_array / np.max(img_array)))
+                # if transpose:
+                #     img = Image.fromarray(np.transpose(np.uint8(255.0 * img_array / np.max(img_array))))
+                # else:
+                img = Image.fromarray(np.uint8(255.0 * img_array / np.max(img_array)))
                 imgs.append(img)
         ImageEvolution.saveTiledImages(imgs, model_name, n_columns=8,cropx=10, cropy = 10)
 
@@ -135,6 +133,5 @@ class ImageEvolution(object):
 
 data, label = DataLoader.load_testing(dataset='nucleus', records=-1)
 ImageEvolution.save_epoch_evolution('unet_6-3_mse_nucleus-all-epochs',
-    data[np.newaxis,-1,...], label[np.newaxis,-1,...], epochs=4, n_columns=2,
-    # data[np.newaxis,-1,...], label[np.newaxis,-1,...], epochs=25, n_columns=5,
-                                    transpose=False)
+    data, label, epochs=4, n_columns=2)
+    # data[np.newaxis,-1,...], label[np.newaxis,-1,...], epochs=25, n_columns=5)
