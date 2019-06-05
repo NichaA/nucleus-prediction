@@ -3,13 +3,18 @@ from keras import backend as K
 import numpy as np
 from src.processing.folders import Folders
 K.set_image_data_format('channels_last')
+import errno
+
 
 class DataLoader(object):
     @classmethod
-    def load(cls, dataset='nucleus', set='training', records = -1, separate=True):
+    def load(cls, dataset='nucleus', set='training', records = -1):
         data_path = Folders.data_folder() + '{0}-{1}.npz'.format(dataset, set)
         if os.path.isfile(data_path):
             raw = np.load(data_path, mmap_mode='r')
+        else:
+            raise FileNotFoundError(errno.ENOENT,
+                os.strerror(errno.ENOENT), data_path)
         if records > 0:
             # additional logic for efficient caching of small subsets of records
             raw_trunc = Folders.data_folder() + '{0}-{1}-n{2}.npz'.format(dataset, set, records)
@@ -25,12 +30,12 @@ class DataLoader(object):
 
 
     @classmethod
-    def load_training(cls, dataset='nucleus', records=-1, separate=True):
-        return DataLoader.load(dataset=dataset, set='training', records=records, separate=separate)
+    def load_training(cls, dataset='nucleus', records=-1):
+        return DataLoader.load(dataset=dataset, set='training', records=records)
 
     @classmethod
-    def load_testing(cls, dataset='nucleus', records=-1, separate=True):
-        return DataLoader.load(dataset=dataset, set='test', records=records, separate=separate)
+    def load_testing(cls, dataset='nucleus', records=-1):
+        return DataLoader.load(dataset=dataset, set='test', records=records)
 
     @classmethod
     def batch_data(cls, train_data, train_labels, batch_size):
