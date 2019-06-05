@@ -14,7 +14,7 @@ import keras.layers.advanced_activations as A
 
 train_unet('nucleus-all-epochs', dataset='nucleus',
            num_layers=6, filter_size=3, save_best_only=False,
-           learn_rate=1e-4, conv_depth=32, epochs=15,
+           learn_rate=1e-4, conv_depth=32, epochs=25,
            records=-1, batch_size=16, activation=A.PReLU,
            advanced_activations=True, last_activation=A.PReLU)
 
