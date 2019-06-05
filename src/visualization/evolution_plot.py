@@ -87,7 +87,7 @@ class ImageEvolution(object):
 
     @classmethod
     def saveTiledImages(cls, images, model_name, n_columns=4, cropx=0, cropy = 0):
-        print("images.shape: " + images.shape)
+        print("images.shape: {0}".format(images.shape))
 
         if isinstance(images[0],str):
             images = [Image.open(f) for f in images]
