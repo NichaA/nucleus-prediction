@@ -121,6 +121,6 @@ class ImageEvolution(object):
 
 
 data, label = DataLoader.load_testing(dataset='nucleus', records=-1, separate=False)
-ImageEvolution.save_epoch_evolution('unet_6-3_mse_text',
-    data[np.newaxis,-1,...], label[np.newaxis,-1,...], epochs=6, n_columns=3,
+ImageEvolution.save_epoch_evolution('unet_6-3_mse_nucleus-all-epochs',
+    data[np.newaxis,-1,...], label[np.newaxis,-1,...], epochs=25, n_columns=5,
                                     transpose=False)

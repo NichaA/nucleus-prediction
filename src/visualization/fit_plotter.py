@@ -44,4 +44,4 @@ class FitPlotter(object):
         plt.close(fig)
 
 # Test case
-FitPlotter.save_plot({'loss':[0.237664829282,0.237664833081], 'val_loss':[0.236981078982, 0.236981078982]}, 'unet-test.png')
+# FitPlotter.save_plot({'loss':[0.237664829282,0.237664833081], 'val_loss':[0.236981078982, 0.236981078982]}, 'unet-test.png')
