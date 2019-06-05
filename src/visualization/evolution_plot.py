@@ -48,7 +48,7 @@ class ImageEvolution(object):
 
         data = data.reshape([data.shape[0], data.shape[1], data.shape[2]])
         labels = labels.reshape([labels.shape[0], labels.shape[1], labels.shape[2]])
-        for idx in len(data.shape[0]):
+        for idx in range(data.shape[0]):
             img = ImageEvolution.format_and_return(data[idx], transpose=transpose)
             label = ImageEvolution.format_and_return(labels[idx], transpose=transpose)
 
