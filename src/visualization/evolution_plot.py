@@ -86,11 +86,15 @@ class ImageEvolution(object):
 
 
     @classmethod
-    def saveTiledImages(cls, images, model_name, n_columns=4, cropx=0, cropy = 0):
+    def saveTiledImages(cls, image_data, model_name, n_columns=4, cropx=0, cropy = 0):
         print("images.shape: {0}".format(images.shape))
 
-        if isinstance(images[0],str):
-            images = [Image.open(f) for f in images]
+        images = []
+        for i in range(image_data.shape[0]):
+            images.append(ImageEvolution.format_and_return(image_data[i]))
+
+        # if isinstance(images[0],str):
+        #     images = [Image.open(f) for f in images]
 
         # resize all images to the same size
         for i in range(len(images)):
