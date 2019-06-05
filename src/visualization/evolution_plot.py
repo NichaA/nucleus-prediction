@@ -15,6 +15,7 @@ from PIL import ImageFont
 from PIL import ImageDraw
 
 from keras import backend as K
+
 import scipy.misc
 
 class ImageEvolution(object):
@@ -41,6 +42,8 @@ class ImageEvolution(object):
             # just predict on the selected index
             predictions = model.predict(data, batch_size=32, verbose=0)
             del model
+            K.clear_session()
+
             predictions=predictions.astype(np.float64)
             predictions=predictions.reshape([data.shape[0],data.shape[1], data.shape[2]])
             #pred = ImageEvolution.format_and_return(predictions[idx])
