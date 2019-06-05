@@ -93,7 +93,8 @@ class ImageEvolution(object):
         images = []
         for i in range(image_data.shape[0]):
             images.append(ImageEvolution.format_and_return(image_data[i]))
-        font = ImageFont.truetype("sans-serif.ttf", 16)
+        # font = ImageFont.truetype("sans-serif.ttf", 16)
+        # font = ImageFont.load_default()
 
         # if isinstance(images[0],str):
         #     images = [Image.open(f) for f in images]
@@ -118,7 +119,7 @@ class ImageEvolution(object):
                 tile_idx = row*n_columns+col
                 tile = images[tile_idx]
                 image.paste(tile, (x0,y0))
-                draw.text((x0+width - 10, y0 + height-10), tile_idx, (255, 0, 0), font=font)
+                # draw.text((x0+width - 10, y0 + height-10), tile_idx, (255, 0, 0))
         full_path = Folders.figures_folder() + model_name + '_evolution.png'
         image.save(full_path)
         # send back the tiled img
@@ -139,5 +140,5 @@ class ImageEvolution(object):
 
 data, label = DataLoader.load_testing(dataset='nucleus', records=-1)
 ImageEvolution.save_epoch_evolution('unet_6-3_mse_nucleus-all-epochs',
-    data, label, epochs=4, n_columns=2)
+    data, label, epochs=25, n_columns=5)
     # data[np.newaxis,-1,...], label[np.newaxis,-1,...], epochs=25, n_columns=5)
