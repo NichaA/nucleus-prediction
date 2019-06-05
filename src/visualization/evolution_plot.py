@@ -50,6 +50,11 @@ class ImageEvolution(object):
             #epoch_ev.append(predictions)
             epoch_ev[i] = predictions
 
+        # save down the predictions
+        # preds_file = Folders.data_folder() + 'epoch_ev-{0}-{1}-epochs.npz'.format(model_name, epochs)
+        # np.savez(preds_file, epoch_ev=epoch_ev)
+
+
         data = data.reshape([data.shape[0], data.shape[1], data.shape[2]])
         labels = labels.reshape([labels.shape[0], labels.shape[1], labels.shape[2]])
         for idx in range(data.shape[0]):
