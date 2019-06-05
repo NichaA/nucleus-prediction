@@ -31,18 +31,20 @@ class ImageEvolution(object):
     @classmethod
     def save_epoch_evolution(cls, model_name, data, labels,
                              epochs = 18, n_columns = 6, transpose=True):
-        epoch_ev = []
-        for i in range(1, epochs + 1):
+        #epoch_ev = []
+        epoch_ev = np.zeros((epochs, data.shape[0], data.shape[1], data.shape[2]))
+        for i in range(epochs):
             # load model
-            print('Epoch ' + str(i))
-            model = keras.models.load_model(Folders.models_folder() + model_name + '/weights_{0:02d}.h5'.format(i))
+            print('Epoch ' + str(i+1))
+            model = keras.models.load_model(Folders.models_folder() + model_name + '/weights_{0:02d}.h5'.format(i+1))
             # just predict on the selected index
             predictions = model.predict(data, batch_size=32, verbose=0)
             del model
             predictions=predictions.astype(np.float64)
             predictions=predictions.reshape([data.shape[0],data.shape[1], data.shape[2]])
-            pred = ImageEvolution.format_and_return(predictions[idx], transpose=transpose)
-            epoch_ev.append(pred)
+            #pred = ImageEvolution.format_and_return(predictions[idx], transpose=transpose)
+            #epoch_ev.append(predictions)
+            epoch_ev[i] = predictions
 
         data = data.reshape([data.shape[0], data.shape[1], data.shape[2]])
         labels = labels.reshape([labels.shape[0], labels.shape[1], labels.shape[2]])
@@ -50,7 +52,7 @@ class ImageEvolution(object):
             img = ImageEvolution.format_and_return(data[idx], transpose=transpose)
             label = ImageEvolution.format_and_return(labels[idx], transpose=transpose)
 
-            ImageEvolution.saveTiledImages(epoch_ev, model_name + '_{0:05}'.format(idx), n_columns=n_columns)
+            ImageEvolution.saveTiledImages(epoch_ev[:, idx, ...], model_name + '_{0:05}'.format(idx), n_columns=n_columns)
             scipy.misc.imsave(Folders.figures_folder() + model_name + '_evolution_data_{0:05}.png'.format(idx), img)
             scipy.misc.imsave(Folders.figures_folder() + model_name + '_evolution_label_{0:05}.png'.format(idx), label)
 
@@ -85,6 +87,8 @@ class ImageEvolution(object):
 
     @classmethod
     def saveTiledImages(cls, images, model_name, n_columns=4, cropx=0, cropy = 0):
+        print("images.shape: " + images.shape)
+
         if isinstance(images[0],str):
             images = [Image.open(f) for f in images]
 
