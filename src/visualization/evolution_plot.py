@@ -11,6 +11,9 @@ from src.data.loader import DataLoader
 from src.processing.folders import Folders
 matplotlib.use('Agg')
 from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
+
 from keras import backend as K
 import scipy.misc
 
@@ -90,6 +93,7 @@ class ImageEvolution(object):
         images = []
         for i in range(image_data.shape[0]):
             images.append(ImageEvolution.format_and_return(image_data[i]))
+        font = ImageFont.truetype("sans-serif.ttf", 16)
 
         # if isinstance(images[0],str):
         #     images = [Image.open(f) for f in images]
@@ -106,13 +110,15 @@ class ImageEvolution(object):
         a_height = int(height * n_rows)
         a_width = int(width * n_columns)
         image = Image.new('L', (a_width, a_height), color=255)
-
+        draw = ImageDraw.Draw(image)
         for row in range(n_rows):
             for col in range(n_columns):
                 y0 = row * height - cropy
                 x0 = col * width - cropx
-                tile = images[row*n_columns+col]
+                tile_idx = row*n_columns+col
+                tile = images[tile_idx]
                 image.paste(tile, (x0,y0))
+                draw.text((x0+width - 10, y0 + height-10), tile_idx, (255, 0, 0), font=font)
         full_path = Folders.figures_folder() + model_name + '_evolution.png'
         image.save(full_path)
         # send back the tiled img
