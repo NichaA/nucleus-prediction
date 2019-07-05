@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src.processing.train import train_unet
-from src.losses.avg import mse_ssim_loss
+from src.loss.avg import mse_ssim_loss
 from src.processing.predict import prediction
 from src.data.loader import DataLoader
 import keras.layers.advanced_activations as A
