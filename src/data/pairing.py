@@ -25,24 +25,23 @@ def generate_pairings(dir, debug=False):
                     matching_dapis = glob.glob(subbed)
                     if len(matching_dapis) > 0:
                         pruned_input_files.append((trans_file, matching_dapis[0]))
-                        break;
+                        break
         # serialize the pairs to pairings.csv
-        id = 0
         csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow(['id', 'filename', 'pair_id'])
-        seen_files = set()
+        file_id, seen_files = 0, set()
         for trans,dapi in pruned_input_files:
-            csv_writer.writerow([id, ntpath.basename(trans), id+1])
-            csv_writer.writerow([id+1, ntpath.basename(dapi), None])
+            csv_writer.writerow([file_id, ntpath.basename(trans), file_id+1])
+            csv_writer.writerow([file_id+1, ntpath.basename(dapi), None])
             seen_files.add(ntpath.basename(trans))
             seen_files.add(ntpath.basename(dapi))
-            id = id + 2
+            file_id = file_id + 2
 
         # write the unpaired files:
         for file in glob.glob(dir + '*.*'):
             if file not in seen_files and ntpath.basename(file) != PAIRING_FILE:
-                csv_writer.writerow([id, ntpath.basename(file), None])
-                id = id + 1
+                csv_writer.writerow([file_id, ntpath.basename(file), None])
+                file_id = file_id + 1
 
         if debug:
             print("Num input pairs in {0}: {1}\n\n".format(os.path.basename(dir), len(pruned_input_files)))
